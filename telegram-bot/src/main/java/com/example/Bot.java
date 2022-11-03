@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.handlers.CallbackQueryHandler;
+import com.example.handlers.MessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
@@ -14,19 +16,25 @@ public class Bot extends SpringWebhookBot {
     private String botToken;
 
     private final MessageHandler messageHandler;
-//    private final CallbackQueryHandler callbackQueryHandler;
+    private final CallbackQueryHandler callbackQueryHandler;
 
-//    @Autowired
-    public Bot(SetWebhook setWebhook, MessageHandler messageHandler) {
+    @Autowired
+    public Bot(SetWebhook setWebhook, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
         super(setWebhook);
         this.messageHandler = messageHandler;
+        this.callbackQueryHandler = callbackQueryHandler;
     }
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        Message message = update.getMessage();
-        if (message != null) {
-            return messageHandler.answerMessage(message);
+        if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            return callbackQueryHandler.processCallbackQuery(callbackQuery);
+        } else {
+            Message message = update.getMessage();
+            if (message != null) {
+                return messageHandler.answerMessage(message);
+            }
         }
         return null;
     }

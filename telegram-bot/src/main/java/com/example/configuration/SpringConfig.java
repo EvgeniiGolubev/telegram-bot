@@ -1,7 +1,8 @@
 package com.example.configuration;
 
 import com.example.Bot;
-import com.example.MessageHandler;
+import com.example.handlers.CallbackQueryHandler;
+import com.example.handlers.MessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public Bot springWebhookBot(SetWebhook setWebhook, MessageHandler messageHandler) {
-        Bot bot = new Bot(setWebhook, messageHandler);
+    public Bot springWebhookBot(SetWebhook setWebhook, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
+        Bot bot = new Bot(setWebhook, messageHandler, callbackQueryHandler);
 
         bot.setBotPath(telegramConfig.getWebhookPath());
         bot.setBotUsername(telegramConfig.getBotName());
