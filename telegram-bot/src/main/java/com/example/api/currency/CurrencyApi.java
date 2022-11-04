@@ -1,33 +1,27 @@
 package com.example.api.currency;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class CurrencyApi {
     public static String getCurrencyValue(String value){
-        String URL = "https://www.google.com/finance/quote/value-KZT".replaceAll("value", value);
-        Document document;
-        try {
-            document = Jsoup.connect(URL)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36")
-                    .referrer("https://bot-for-test-on-java.herokuapp.com/")
-                    .get();
-        } catch (IOException e) {
-            throw new HtmlPageParsingException("Ошибка в чтении валютных котировок.");
-        }
+        String url = "https://api.apilayer.com/fixer/convert?to=KZT&from=value&amount=1".replaceAll("value", value);
 
-        Elements list = document.getElementsByClass("YMlKec fxKbKc");
-        String result = "0";
-        for (Element element : list) {
-            result = element.text();
-        }
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("apikey", "IDsOcDAEJsWpPhb2seSYFcCk3KOW0KSO");
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<Currency> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, Currency.class);
 
-        return result;
+        Currency currency = exchange.getBody();
+        if (currency == null) {
+            throw new CurrencyApiException("Ошибка в чтении валютных котировок.");
+        }
+        return currency.getResult();
     }
 }

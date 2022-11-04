@@ -1,8 +1,7 @@
 package com.example.handlers;
 
 import com.example.api.currency.CurrencyApi;
-import com.example.api.currency.HtmlPageParsingException;
-import com.example.api.weather.exceptions.WeatherApiException;
+import com.example.api.currency.CurrencyApiException;
 import com.example.keyboard.ReplyKeyboardMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +42,7 @@ public class CallbackQueryHandler {
         String answer;
         try {
             answer = String.format("1 %s равен %s тенге", currency, currencyApi.getCurrencyValue(value));
-        } catch (HtmlPageParsingException ex) {
+        } catch (CurrencyApiException ex) {
             answer = ex.getMessage();
         }
 
