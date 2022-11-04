@@ -22,6 +22,6 @@ public class CurrencyApi {
         if (currency == null) {
             throw new CurrencyApiException("Ошибка в чтении валютных котировок.");
         }
-        return currency.getResult();
+        return currency.getResult().substring(0, 6);
     }
 }
