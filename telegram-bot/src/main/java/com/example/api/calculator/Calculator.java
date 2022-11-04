@@ -12,7 +12,7 @@ public class Calculator {
     private final String unexpectedCharacter = "Неожиданный символ: '%s'";
     private final String unexpectedToken = "Неожиданный знак: '%s' в позиции: %s";
 
-    public int expressionSolution(String expression) {
+    public double expressionSolution(String expression) {
         List<Lexeme> lexemes = lexAnalyze(crutchForMinusSign(expression));
         LexemeBuffer lexemeBuffer = new LexemeBuffer(lexemes);
         return expr(lexemeBuffer);
@@ -39,7 +39,7 @@ public class Calculator {
     }
 
 
-    private int expr(LexemeBuffer lexemes) {
+    private double expr(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
         if (lexeme.getType() == LexemeType.EOF) {
             return 0;
@@ -49,8 +49,8 @@ public class Calculator {
         }
     }
 
-    private int plusminus(LexemeBuffer lexemes) {
-        int value = multdiv(lexemes);
+    private double plusminus(LexemeBuffer lexemes) {
+        double value = multdiv(lexemes);
         while (true) {
             Lexeme lexeme = lexemes.next();
             switch (lexeme.getType()) {
@@ -70,8 +70,8 @@ public class Calculator {
         }
     }
 
-    private int multdiv(LexemeBuffer lexemes) {
-        int value = factor(lexemes);
+    private double multdiv(LexemeBuffer lexemes) {
+        double value = factor(lexemes);
         while (true) {
             Lexeme lexeme = lexemes.next();
             switch (lexeme.getType()) {
@@ -93,13 +93,13 @@ public class Calculator {
         }
     }
 
-    private int factor(LexemeBuffer lexemes) {
+    private double factor(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
         switch (lexeme.getType()) {
             case NUMBER:
                 return Integer.parseInt(lexeme.getValue());
             case LEFT_BRACKET:
-                int value = expr(lexemes);
+                double value = expr(lexemes);
                 lexeme = lexemes.next();
                 if (lexeme.getType() != LexemeType.RIGHT_BRACKET) {
                     throw new UnexpectedToken(String.format(unexpectedToken, lexeme.getValue(), lexemes.getPos()));

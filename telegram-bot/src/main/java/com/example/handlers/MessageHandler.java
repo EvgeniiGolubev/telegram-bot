@@ -105,7 +105,7 @@ public class MessageHandler {
 
         if (expression.equals("")) return new SendMessage(chatId, Messages.EMPTY_INPUT.getMessage());
 
-        int result;
+        double result;
         try {
             result = calculator.expressionSolution(expression);
         } catch (UnexpectedCharacter | UnexpectedToken ex) {
