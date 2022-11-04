@@ -1,4 +1,4 @@
-package com.example.calculator;
+package com.example.api.calculator;
 
 import java.util.List;
 

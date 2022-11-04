@@ -1,4 +1,4 @@
-package com.example.calculator;
+package com.example.api.calculator;
 
 public enum LexemeType {
     LEFT_BRACKET,

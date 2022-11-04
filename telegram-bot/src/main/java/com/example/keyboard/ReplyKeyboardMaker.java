@@ -14,6 +14,8 @@ public class ReplyKeyboardMaker {
     public ReplyKeyboardMarkup getMainMenuKeyboard() {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton("Калькулятор"));
+        row1.add(new KeyboardButton("Погода"));
+        row1.add(new KeyboardButton("Курс валют"));
 
         List<KeyboardRow> keyboard = new ArrayList<>(){{
             add(row1);

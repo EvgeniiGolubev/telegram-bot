@@ -1,7 +1,7 @@
-package com.example.calculator;
+package com.example.api.calculator;
 
-import com.example.calculator.exceptions.UnexpectedCharacter;
-import com.example.calculator.exceptions.UnexpectedToken;
+import com.example.api.calculator.exceptions.UnexpectedCharacter;
+import com.example.api.calculator.exceptions.UnexpectedToken;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import java.util.List;
 
 @Component
 public class Calculator {
+    private final String unexpectedCharacter = "Неожиданный символ: '%s'";
+    private final String unexpectedToken = "Неожиданный знак: '%s' в позиции: %s";
 
     public int expressionSolution(String expression) {
         List<Lexeme> lexemes = lexAnalyze(crutchForMinusSign(expression));
@@ -63,8 +65,7 @@ public class Calculator {
                     lexemes.back();
                     return value;
                 default:
-                    throw new UnexpectedToken("Unexpected token: " + lexeme.getValue()
-                            + " at position: " + lexemes.getPos());
+                    throw new UnexpectedToken(String.format(unexpectedToken, lexeme.getValue(), lexemes.getPos()));
             }
         }
     }
@@ -87,8 +88,7 @@ public class Calculator {
                     lexemes.back();
                     return value;
                 default:
-                    throw new UnexpectedToken("Unexpected token: " + lexeme.getValue()
-                            + " at position: " + lexemes.getPos());
+                    throw new UnexpectedToken(String.format(unexpectedToken, lexeme.getValue(), lexemes.getPos()));
             }
         }
     }
@@ -102,13 +102,11 @@ public class Calculator {
                 int value = expr(lexemes);
                 lexeme = lexemes.next();
                 if (lexeme.getType() != LexemeType.RIGHT_BRACKET) {
-                    throw new UnexpectedToken("Unexpected token: " + lexeme.getValue()
-                            + " at position: " + lexemes.getPos());
+                    throw new UnexpectedToken(String.format(unexpectedToken, lexeme.getValue(), lexemes.getPos()));
                 }
                 return value;
             default:
-                throw new UnexpectedToken("Unexpected token: " + lexeme.getValue()
-                        + " at position: " + lexemes.getPos());
+                throw new UnexpectedToken(String.format(unexpectedToken, lexeme.getValue(), lexemes.getPos()));
         }
     }
 
@@ -156,7 +154,7 @@ public class Calculator {
                         lexemes.add(new Lexeme(LexemeType.NUMBER, sb.toString()));
                     } else {
                         if (c != ' ') {
-                            throw new UnexpectedCharacter("Unexpected character: " + c);
+                            throw new UnexpectedCharacter(String.format(unexpectedCharacter, c));
                         }
                         pos++;
                     }

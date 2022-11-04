@@ -1,4 +1,4 @@
-package com.example.calculator;
+package com.example.api.calculator;
 
 public class Lexeme {
     private LexemeType type;
@@ -18,23 +18,7 @@ public class Lexeme {
         return type;
     }
 
-    public void setType(LexemeType type) {
-        this.type = type;
-    }
-
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "Lexeme{" +
-                "type=" + type +
-                ", value='" + value + '\'' +
-                '}';
     }
 }
